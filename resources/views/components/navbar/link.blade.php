@@ -1,0 +1,1 @@
+<a {{ $attributes }} class="{{ request()->fullUrlIs(url($href)) ? 'text-emerald-800 border-b-2 border-emerald-800' : 'text-neutral-400' }} h-full block w-fit text-sm hover:text-emerald-800" aria-current="page">{{ $slot }}</a>
