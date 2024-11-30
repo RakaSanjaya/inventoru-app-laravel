@@ -18,33 +18,21 @@ class ProductTransaction extends Model
         'transaction_type',
     ];
 
-    /**
-     * Relasi dengan produk.
-     */
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    /**
-     * Relasi dengan pemasok.
-     */
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
     }
 
-    /**
-     * Relasi dengan user (admin, super admin, atau user).
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relasi dengan lokasi penyimpanan.
-     */
     public function storageLocation()
     {
         return $this->belongsTo(StorageLocation::class);

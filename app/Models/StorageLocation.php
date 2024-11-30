@@ -13,18 +13,4 @@ class StorageLocation extends Model
         'name',
         'description',
     ];
-
-    /**
-     * Relasi dengan transaksi produk.
-     */
-    public function transactions()
-    {
-        return $this->hasMany(ProductTransaction::class);
-    }
-
-    // StorageLocation model
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'storage_location_id');  // Menghubungkan lokasi penyimpanan ke produk
-    }
 }

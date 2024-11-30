@@ -32,7 +32,7 @@
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">
                     <a href="{{ route('products.show', $product->id) }}" class="text-blue-600 hover:underline">{{ $product->name }}</a>
                 </td>
-                <td class="px-6 py-4 text-sm text-gray-800">{{ $product->category->name ?? 'No Category' }}</td>
+                <td class="px-6 py-4 text-sm text-gray-800">{{ $product->category   ?? 'No Category' }}</td>
                 <td class="px-6 py-4 text-sm text-gray-800">{{ $product->stock }}</td>
                 <td class="px-6 py-4 text-sm text-gray-800">${{ number_format($product->price, 2) }}</td>
                 <td class="px-6 py-4 text-sm">

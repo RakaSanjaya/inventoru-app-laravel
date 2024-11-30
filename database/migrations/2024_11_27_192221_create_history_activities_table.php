@@ -10,17 +10,17 @@ class CreateHistoryActivitiesTable extends Migration
     {
         Schema::create('history_activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Relasi ke tabel users
-            $table->foreignId('product_id')->nullable()->constrained()->onDelete('cascade'); // Relasi ke tabel products
+            $table->string('actor')->nullable();
+            $table->string('name_product')->nullable();
             $table->enum('activity_type', [
-                'added',  // Barang baru ditambahkan
-                'removed', // Barang dihapus
-                'updated', // Barang diubah
-                'stock_in', // Stok masuk (penambahan stok)
-                'stock_out', // Stok keluar (pengurangan stok)
+                'added',
+                'removed',
+                'updated',
+                'stock_in',
+                'stock_out',
             ]);
-            $table->integer('quantity_change')->nullable(); // Perubahan stok (untuk stok masuk atau keluar)
-            $table->text('description')->nullable(); // Deskripsi aktivitas
+            $table->integer('quantity_change')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

@@ -5,8 +5,6 @@
 @section('content')
 <div class="bg-white p-6 rounded shadow">
     <h1 class="text-2xl font-bold mb-4">History of Activities</h1>
-
-    <!-- Tabel Aktivitas -->
     <table class="min-w-full table-auto border-collapse border border-gray-200">
         <thead>
             <tr>
@@ -24,14 +22,14 @@
                 <td class="px-4 py-2 border {{ $activity->getActivityTypeClass() }}">
                     {{ ucfirst(str_replace('_', ' ', $activity->activity_type)) }}
                 </td>
-                <td class="px-4 py-2 border">{{ $activity->product->name }}</td>
+                <td class="px-4 py-2 border">{{ $activity->name_product }}</td>
                 <td class="px-4 py-2 border">{{ $activity->quantity_change }}</td>
                 <td class="px-4 py-2 border">{{ $activity->description }}</td>
-                <td class="px-4 py-2 border">{{ $activity->user->name }}</td>
+                <td class="px-4 py-2 border">{{ $activity->actor }}</td>
                 <td class="px-4 py-2 border">{{ $activity->created_at->format('Y-m-d H:i:s') }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
 </div>
-@endsection 
+@endsection

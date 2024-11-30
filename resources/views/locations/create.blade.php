@@ -19,7 +19,6 @@
     <form action="{{ route('locations.store') }}" method="POST">
         @csrf
 
-        <!-- Name -->
         <div>
             <label for="name" class="block font-bold">Storage Location Name</label>
             <input
@@ -34,7 +33,6 @@
             @enderror
         </div>
 
-        <!-- Description -->
         <div>
             <label for="description" class="block font-bold">Description</label>
             <textarea

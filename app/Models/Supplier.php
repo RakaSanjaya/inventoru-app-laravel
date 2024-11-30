@@ -17,9 +17,6 @@ class Supplier extends Model
         'address',
     ];
 
-    /**
-     * Relasi dengan transaksi produk.
-     */
     public function transactions()
     {
         return $this->hasMany(ProductTransaction::class);

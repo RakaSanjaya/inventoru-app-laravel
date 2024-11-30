@@ -11,15 +11,12 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->string('category')->nullable();
             $table->string('sku')->unique();
             $table->integer('stock')->default(0);
             $table->decimal('price', 15, 2);
             $table->text('description')->nullable();
-
-            // Adding storage_location_id column with a foreign key relationship to the storage_locations table
-            $table->foreignId('storage_location_id')->nullable()->constrained('storage_locations')->onDelete('set null');
-            
+            $table->string('storage_location')->nullable();
             $table->timestamps();
         });
     }

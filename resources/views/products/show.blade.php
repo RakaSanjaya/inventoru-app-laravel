@@ -31,6 +31,10 @@
                 <td class="px-6 py-4 text-sm text-gray-900">{{ $product->stock }}</td>
             </tr>
             <tr class="border-b hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm font-medium text-gray-600">Storage Location</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ $product->storage_location }}</td>
+            </tr>
+            <tr class="border-b hover:bg-gray-50">
                 <td class="px-6 py-4 text-sm font-medium text-gray-600">Price</td>
                 <td class="px-6 py-4 text-sm text-gray-900">${{ number_format($product->price, 2) }}</td>
             </tr>

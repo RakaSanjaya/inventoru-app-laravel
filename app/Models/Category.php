@@ -13,12 +13,4 @@ class Category extends Model
         'name',
         'description',
     ];
-
-    /**
-     * Relasi dengan produk.
-     */
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
 }

@@ -4,7 +4,6 @@
 <div class="container mx-auto p-6">
     <h1 class="text-2xl font-semibold mb-6">Notifikasi</h1>
 
-    <!-- Menampilkan notifikasi sukses -->
     @if(session('success'))
     <div class="alert alert-success bg-green-100 text-green-800 p-4 rounded-lg shadow-md mb-4">
         {{ session('success') }}
@@ -15,7 +14,12 @@
         @foreach ($notifications as $notification)
         <div class="bg-white p-4 rounded-lg shadow-md flex justify-between items-start">
             <div class="flex-1">
-                <p class="text-gray-800 font-medium">{{ $notification->message }}</p>
+                <p class="text-gray-800 font-medium flex items-center">
+                    @if (!$notification->is_read)
+                    <span class="w-2.5 h-2.5 bg-yellow-600 rounded-full mr-2"></span>
+                    @endif
+                    {{ $notification->message }}
+                </p>
                 <p class="text-sm text-gray-500">{{ $notification->created_at->diffForHumans() }}</p>
             </div>
             <div class="flex flex-col items-end space-y-2">
@@ -32,6 +36,9 @@
             </div>
         </div>
         @endforeach
+    </div>
+    <div class="w-full mt-6">
+        {{ $notifications->links() }}
     </div>
 </div>
 @endsection

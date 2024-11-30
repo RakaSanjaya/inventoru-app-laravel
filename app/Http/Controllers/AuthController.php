@@ -20,23 +20,21 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         $validator = Validator::make($credentials, [
-            'email' => 'required|string|email',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
         if ($validator->fails()) {
-            return redirect('login')
+            return redirect()->route('login')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         if (Auth::attempt($credentials)) {
-            // Pengguna berhasil login, arahkan ke dashboard
             return redirect()->intended('dashboard');
         }
 
-        // Jika login gagal
-        return redirect('login')->withErrors('Email atau password salah');
+        return redirect()->route('login')->withErrors('Email atau kata sandi salah.');
     }
 
     public function showRegistrationForm()
@@ -48,17 +46,12 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'confirmed',
-            ],
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         if ($validator->fails()) {
-            return redirect('register')
+            return redirect()->route('register')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -69,24 +62,21 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Arahkan pengguna ke halaman login setelah registrasi berhasil
-        return redirect('login')->with('success', 'Your account has been created. Please log in.');
+        return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Silakan login.');
     }
 
     public function dashboard()
     {
-        // Periksa apakah pengguna terautentikasi
         if (Auth::check()) {
             return view('dashboard.index');
         }
 
-        // Jika tidak terautentikasi, redirect ke halaman login
-        return redirect('login')->withErrors('You are not allowed to access');
+        return redirect()->route('login')->withErrors('Anda tidak memiliki izin untuk mengakses halaman ini.');
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('login');
+        return redirect()->route('login');
     }
 }

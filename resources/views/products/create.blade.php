@@ -6,7 +6,6 @@
 <div class="bg-white p-6 rounded shadow">
     <h1 class="text-2xl font-bold mb-4">Add New Product</h1>
 
-    <!-- Pesan Konfirmasi -->
     @if(session('warning'))
     <div class="bg-yellow-100 border-t border-b border-yellow-400 text-yellow-700 px-4 py-3 mb-4">
         <p>{{ session('warning') }}</p>
@@ -23,11 +22,9 @@
     </div>
     @endif
 
-    <!-- Formulir Produk -->
     <form id="product-form" action="{{ route('products.store') }}" method="POST" class="space-y-4">
         @csrf
 
-        <!-- Name -->
         <div>
             <label for="name" class="block font-bold">Product Name</label>
             <input
@@ -42,47 +39,43 @@
             @enderror
         </div>
 
-        <!-- Category -->
         <div>
-            <label for="category_id" class="block font-bold">Category</label>
+            <label for="category" class="block font-bold">Category</label>
             <select
-                name="category_id"
-                id="category_id"
-                class="border rounded w-full px-4 py-2 @error('category_id') border-red-500 @enderror"
-                required>
+                name="category"
+                id="category"
+                class="border rounded w-full px-4 py-2 @error('category') border-red-500 @enderror">
                 <option value="">Select Category</option>
                 @foreach ($categories as $category)
-                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                <option value="{{ $category->name }}"
+                    {{ old('category') == $category->name ? 'selected' : '' }}>
                     {{ $category->name }}
                 </option>
                 @endforeach
             </select>
-            @error('category_id')
+            @error('category')
             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
-        <!-- Storage Location -->
         <div>
-            <label for="storage_location_id" class="block font-bold">Storage Location</label>
+            <label for="storage_location" class="block font-bold">Storage Location</label>
             <select
-                name="storage_location_id"
-                id="storage_location_id"
-                class="border rounded w-full px-4 py-2 @error('storage_location_id') border-red-500 @enderror"
-                required>
+                name="storage_location"
+                id="storage_location"
+                class="border rounded w-full px-4 py-2 @error('storage_location') border-red-500 @enderror">
                 <option value="">Select Storage Location</option>
                 @foreach ($storageLocations as $location)
-                <option value="{{ $location->id }}" {{ old('storage_location_id') == $location->id ? 'selected' : '' }}>
+                <option value="{{ $location->name }}" {{ old('storage_location') == $location->name ? 'selected' : '' }}>
                     {{ $location->name }}
                 </option>
                 @endforeach
             </select>
-            @error('storage_location_id')
+            @error('storage_location')
             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
-        <!-- SKU -->
         <div>
             <label for="sku" class="block font-bold">SKU</label>
             <input
@@ -97,7 +90,6 @@
             @enderror
         </div>
 
-        <!-- Stock -->
         <div>
             <label for="stock" class="block font-bold">Stock</label>
             <input
@@ -113,7 +105,6 @@
             @enderror
         </div>
 
-        <!-- Price -->
         <div>
             <label for="price" class="block font-bold">Price</label>
             <input
@@ -130,7 +121,6 @@
             @enderror
         </div>
 
-        <!-- Description -->
         <div>
             <label for="description" class="block font-bold">Description</label>
             <textarea
@@ -142,7 +132,6 @@
             @enderror
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" id="submit-button" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500">
             Save Product
         </button>

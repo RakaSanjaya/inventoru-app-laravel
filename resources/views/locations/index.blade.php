@@ -6,21 +6,18 @@
 <div class="bg-white p-6 rounded shadow">
     <h1 class="text-2xl font-bold mb-4">Storage Locations</h1>
 
-    <!-- Success Message -->
     @if (session('success'))
     <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
         {{ session('success') }}
     </div>
     @endif
 
-    <!-- Add Storage Location Button -->
     <div class="mb-4">
         <a href="{{ route('locations.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500">
             Add Storage Location
         </a>
     </div>
 
-    <!-- Locations Table -->
     <table class="min-w-full table-auto">
         <thead>
             <tr>

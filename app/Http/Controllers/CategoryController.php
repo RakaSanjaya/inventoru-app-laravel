@@ -21,15 +21,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:categories|max:255', // Nama kategori harus unik
-            'description' => 'nullable', // Deskripsi opsional
+            'name' => 'required|unique:categories|max:255',
+            'description' => 'nullable',
         ]);
 
-        Category::create($request->all());
+        Category::create($request->only('name', 'description'));
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil dibuat.');
     }
-
 
     public function edit($id)
     {
@@ -45,22 +44,16 @@ class CategoryController extends Controller
         ]);
 
         $category = Category::findOrFail($id);
-        $category->update($request->all());
+        $category->update($request->only('name', 'description'));
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil diperbarui.');
     }
-
 
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
-
-        // Hapus semua produk terkait
-        $category->products()->delete();
-
-        // Hapus kategori
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category and related products deleted successfully.');
+        return redirect()->route('categories.index')->with('success', 'Kategori dan produk terkait berhasil dihapus.');
     }
 }

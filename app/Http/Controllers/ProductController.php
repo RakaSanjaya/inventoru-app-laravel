@@ -14,13 +14,13 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category', 'storageLocation')->get();
+        $products = Product::all();
         return view('products.index', compact('products'));
     }
 
     public function show($id)
     {
-        $product = Product::with('category', 'storageLocation')->findOrFail($id);
+        $product = Product::findOrFail($id);
         return view('products.show', compact('product'));
     }
 
@@ -35,28 +35,19 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'storage_location_id' => 'required|exists:storage_locations,id',
+            'category' => 'required',
+            'storage_location' => 'required',
             'sku' => 'required|max:100|unique:products,sku',
             'stock' => 'required|integer|min:0',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable',
         ]);
 
-        $product = Product::create([
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-            'storage_location_id' => $request->storage_location_id,
-            'sku' => $request->sku,
-            'stock' => $request->stock,
-            'price' => $request->price,
-            'description' => $request->description,
-        ]);
+        $product = Product::create($request->all());
 
-        // Create history for adding product
         HistoryActivity::create([
-            'user_id' => Auth::id(),
-            'product_id' => $product->id,
+            'actor' => Auth::user()->name,
+            'name_product' => $product->name,
             'activity_type' => 'added',
             'quantity_change' => $product->stock,
             'description' => 'Product added to inventory',
@@ -66,9 +57,11 @@ class ProductController extends Controller
             'message' => 'Produk ' . $product->name . ' berhasil ditambahkan.'
         ]);
 
-        // Check if the stock is below 50
         if ($product->stock < 50) {
             session()->flash('warning', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!');
+            Notification::create([
+                'message' => 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!',
+            ]);
         }
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
@@ -86,8 +79,8 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'storage_location_id' => 'required|exists:storage_locations,id',
+            'category' => 'required',
+            'storage_location' => 'required',
             'sku' => 'required|max:100|unique:products,sku,' . $id,
             'stock' => 'required|integer|min:0',
             'price' => 'required|numeric|min:0',
@@ -96,35 +89,50 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
         $oldStock = $product->stock;
+        $nameChanged = $product->name !== $request->name;
+        $oldName = $product->name;
 
-        $product->update([
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-            'storage_location_id' => $request->storage_location_id,
-            'sku' => $request->sku,
-            'stock' => $request->stock,
-            'price' => $request->price,
-            'description' => $request->description,
-        ]);
+        $product->update($request->all());
 
         $quantityChange = $request->stock - $oldStock;
+        $activityDescription = "Product updated. ";
 
-        // Create history for updating product
+        if ($nameChanged) {
+            $activityDescription .= "Name changed from '$oldName' to '{$request->name}'. ";
+        }
+        if ($request->category !== $product->category) {
+            $activityDescription .= "Category changed. ";
+        }
+        if ($request->storage_location !== $product->storage_location) {
+            $activityDescription .= "Storage location changed. ";
+        }
+        if ($request->sku !== $product->sku) {
+            $activityDescription .= "SKU changed. ";
+        }
+        if ($quantityChange !== 0) {
+            $activityDescription .= "Stock changed by $quantityChange units (Old stock: $oldStock, New stock: {$request->stock}). ";
+        }
+        if ($request->price !== $product->price) {
+            $activityDescription .= "Price changed. ";
+        }
+
         HistoryActivity::create([
-            'user_id' => Auth::id(),
-            'product_id' => $product->id,
+            'actor' => Auth::user()->name,
+            'name_product' => $product->name,
             'activity_type' => 'updated',
             'quantity_change' => $quantityChange,
-            'description' => "Product updated. Old stock: $oldStock, New stock: {$request->stock}",
+            'description' => $activityDescription,
         ]);
 
         Notification::create([
             'message' => 'Produk ' . $product->name . ' berhasil diperbarui.'
         ]);
 
-        // Check if the stock is below 50
         if ($product->stock < 50) {
             session()->flash('warning', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!');
+            Notification::create([
+                'message' => 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!',
+            ]);
         }
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
@@ -134,10 +142,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        // Create history for removing product
         HistoryActivity::create([
-            'user_id' => Auth::id(),
-            'product_id' => $product->id,
+            'actor' => Auth::user()->name,
+            'name_product' => $product->name,
             'activity_type' => 'removed',
             'quantity_change' => 0,
             'description' => 'Product removed from inventory',
@@ -167,27 +174,22 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
 
-        if ($request->type === 'stock_in') {
-            $product->stock += $request->quantity;
-        } elseif ($request->type === 'stock_out') {
-            $product->stock -= $request->quantity;
-        }
-
+        $product->stock += $request->type === 'stock_in' ? $request->quantity : -$request->quantity;
         $product->save();
 
-        // Create history for stock adjustment
         HistoryActivity::create([
-            'user_id' => Auth::id(),
-            'product_id' => $product->id,
+            'actor' => Auth::user()->name,
+            'name_product' => $product->name,
             'activity_type' => $request->type,
             'quantity_change' => $request->quantity,
             'description' => ($request->type === 'stock_in' ? 'Menambah' : 'Mengurangi') . ' stok produk ' . $product->name . ' sebanyak ' . $request->quantity,
         ]);
 
-
-        // Check if the stock is below 50 after adjustment
         if ($product->stock < 50) {
             session()->flash('warning', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!');
+            Notification::create([
+                'message' => 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!',
+            ]);
         }
 
         return redirect()->route('products.index')->with('success', 'Stok produk berhasil diperbarui.');
