@@ -9,8 +9,14 @@ class NotificationController extends Controller
 {
     public function index()
     {
+        // Fetch notifications ordered by creation date
         $notifications = Notification::orderBy('created_at', 'desc')->paginate(10);
-        return view('notifications.index', compact('notifications'));
+
+        // Fetch the count of unread notifications
+        $unreadCount = Notification::where('is_read', false)->count();
+
+        // Pass the data to the view
+        return view('notifications.index', compact('notifications', 'unreadCount'));
     }
 
     public function markAsRead($id)

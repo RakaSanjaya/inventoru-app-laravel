@@ -1,34 +1,32 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
-use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
 class UserSeeder extends Seeder
 {
+
     public function run()
     {
-        User::create([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'super_admin',
-            'phone' => '1234567890',
-        ]);
+        $faker = Faker::create();
 
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'admin',
-            'phone' => '9876543210',
-        ]);
-
-        User::create([
-            'name' => 'Regular User',
-            'email' => 'user@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'user',
-            'phone' => '4561237890',
-        ]);
+        // Membuat 10 pengguna dummy
+        foreach (range(1, 10) as $index) {
+            DB::table('users')->insert([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'password' => Hash::make('password123'), // Menggunakan password yang di-hash
+                'role' => $faker->randomElement(['admin', 'super_admin', 'user']),
+                'phone' => $faker->phoneNumber,
+                'avatar' => $faker->imageUrl(200, 200, 'people'),
+                'email_verified_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

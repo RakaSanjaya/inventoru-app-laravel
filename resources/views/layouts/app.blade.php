@@ -17,7 +17,7 @@
     </title>
 </head>
 
-<body class="bg-gray-100 font-inter leading-normal tracking-normal">
+<body class="bg-gray-100 font-inter leading-normal tracking-normal text-sm">
     <x-navbar.index></x-navbar.index>
     <div class="flex h-screen">
         <x-sidebar></x-sidebar>

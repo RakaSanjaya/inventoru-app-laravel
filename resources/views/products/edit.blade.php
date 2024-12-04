@@ -57,7 +57,7 @@
                 <option value="">Select Category</option>
                 @foreach ($categories as $category)
                 <option
-                    value="{{ $product->category }}"
+                    value="{{ $category->name }}"
                     {{ old('category', $product->category) == $category->name ? 'selected' : '' }}>
                     {{ $category->name }}
                 </option>
@@ -78,7 +78,7 @@
                 <option value="">Select Storage Location</option>
                 @foreach ($storageLocations as $storageLocation)
                 <option
-                    value="{{ $product->storage_location }}"
+                    value="{{ $storageLocation->name }}"
                     {{ old('storage_location', $product->storage_location) == $storageLocation->name ? 'selected' : '' }}>
                     {{ $storageLocation->name }}
                 </option>

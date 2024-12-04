@@ -20,7 +20,7 @@
             </tr>
             <tr class="border-b hover:bg-gray-50">
                 <td class="px-6 py-4 text-sm font-medium text-gray-600">Category</td>
-                <td class="px-6 py-4 text-sm text-gray-900">{{ $product->category->name ?? 'No Category' }}</td>
+                <td class="px-6 py-4 text-sm text-gray-900">{{ $product->category ?? 'No Category' }}</td>
             </tr>
             <tr class="border-b hover:bg-gray-50">
                 <td class="px-6 py-4 text-sm font-medium text-gray-600">SKU</td>

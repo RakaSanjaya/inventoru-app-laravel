@@ -19,8 +19,6 @@ class DashboardController extends Controller
         $recentActivities = HistoryActivity::all()->reverse()->take(5);
         $notifications = Notification::latest()->paginate(5);
 
-        $totalNotifications = Notification::count();
-
         return view('dashboard.index', compact(
             'totalProducts',
             'lowStockProducts',
@@ -28,7 +26,6 @@ class DashboardController extends Controller
             'recentProducts',
             'recentActivities',
             'notifications',
-            'totalNotifications'
         ));
     }
 }

@@ -20,7 +20,7 @@
             <select name="category_id" id="category_id" class="border rounded w-full px-4 py-2 @error('category_id') border-red-500 @enderror" required>
                 <option value="">Select Category</option>
                 @foreach ($categories as $category)
-                <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                <option value="{{ $category->id }}" {{ $product->name_category == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                 @endforeach
             </select>
             @error('category_id')

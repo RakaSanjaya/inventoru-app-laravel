@@ -53,15 +53,15 @@ class ProductController extends Controller
             'description' => 'Product added to inventory',
         ]);
 
-        Notification::create([
-            'message' => 'Produk ' . $product->name . ' berhasil ditambahkan.'
-        ]);
-
         if ($product->stock < 50) {
-            session()->flash('warning', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!');
-            Notification::create([
-                'message' => 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!',
-            ]);
+            $existingNotification = Notification::where('message', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!')->first();
+
+            if (!$existingNotification) {
+                session()->flash('warning', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!');
+                Notification::create([
+                    'message' => 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!',
+                ]);
+            }
         }
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
@@ -124,15 +124,15 @@ class ProductController extends Controller
             'description' => $activityDescription,
         ]);
 
-        Notification::create([
-            'message' => 'Produk ' . $product->name . ' berhasil diperbarui.'
-        ]);
-
         if ($product->stock < 50) {
-            session()->flash('warning', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!');
-            Notification::create([
-                'message' => 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!',
-            ]);
+            $existingNotification = Notification::where('message', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!')->first();
+
+            if (!$existingNotification) {
+                session()->flash('warning', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!');
+                Notification::create([
+                    'message' => 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!',
+                ]);
+            }
         }
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
@@ -148,10 +148,6 @@ class ProductController extends Controller
             'activity_type' => 'removed',
             'quantity_change' => 0,
             'description' => 'Product removed from inventory',
-        ]);
-
-        Notification::create([
-            'message' => 'Produk ' . $product->name . ' berhasil dihapus.'
         ]);
 
         $product->delete();
@@ -186,10 +182,14 @@ class ProductController extends Controller
         ]);
 
         if ($product->stock < 50) {
-            session()->flash('warning', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!');
-            Notification::create([
-                'message' => 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!',
-            ]);
+            $existingNotification = Notification::where('message', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!')->first();
+
+            if (!$existingNotification) {
+                session()->flash('warning', 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!');
+                Notification::create([
+                    'message' => 'Stok produk ' . $product->name . ' kurang dari 50. Segera tambah stok!',
+                ]);
+            }
         }
 
         return redirect()->route('products.index')->with('success', 'Stok produk berhasil diperbarui.');

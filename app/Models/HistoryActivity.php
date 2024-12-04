@@ -22,7 +22,7 @@ class HistoryActivity extends Model
         $activityClasses = [
             'stock_in'  => 'bg-green-100 text-green-800',
             'stock_out' => 'bg-red-100 text-red-800',
-            'added'     => 'bg-blue-100 text-blue-800',
+            'added'     => 'bg-sky-100 text-blue-800',
             'removed'   => 'bg-red-100 text-gray-800',
             'updated'   => 'bg-yellow-100 text-yellow-800',
         ];

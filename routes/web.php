@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
@@ -55,6 +56,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/history', [HistoryActivityController::class, 'index'])->name('history.index');
+    Route::delete('/history/{id}', [HistoryActivityController::class, 'destroy'])->name('history.destroy');
+    Route::delete('/history', [HistoryActivityController::class, 'destroyAll'])->name('history.destroyAll');
+    Route::get('/account', [AccountController::class, 'show'])->name('account.show');
 });
 
 Route::middleware('auth')->prefix('locations')->name('locations.')->controller(ProductLocationController::class)->group(function () {
@@ -70,4 +74,27 @@ Route::prefix('notifications')->name('notifications.')->middleware('auth')->grou
     Route::get('/', [NotificationController::class, 'index'])->name('index');
     Route::get('/mark-as-read/{id}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
     Route::get('/delete/{id}', [NotificationController::class, 'delete'])->name('delete');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/account', [AccountController::class, 'index'])->name('accounts.index');
+    Route::post('/account/update', [AccountController::class, 'updateAccount'])->name('accounts.update');
+    Route::post('/account/change-password', [AccountController::class, 'changePassword'])->name('accounts.changePassword');
+});
+
+Route::prefix('admin')->middleware('auth')->group(function () {
+    // Menampilkan semua akun pengguna
+    Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
+
+    // Menampilkan detail akun pengguna
+    Route::get('/accounts/{id}', [AccountController::class, 'show'])->name('accounts.show');
+
+    // Menampilkan halaman form untuk mengedit akun pengguna
+    Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])->name('accounts.edit');
+
+    // Memperbarui data akun pengguna
+    Route::put('/accounts/{id}', [AccountController::class, 'update'])->name('accounts.update');
+
+    // Menghapus akun pengguna
+    Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])->name('accounts.destroy');
 });
