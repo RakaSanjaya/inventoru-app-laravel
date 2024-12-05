@@ -6,25 +6,31 @@
 <div class="bg-white p-6 rounded shadow">
     <h1 class="text-2xl font-bold mb-4">History of Activities</h1>
 
-    <!-- Tombol untuk menghapus semua riwayat aktivitas -->
+    <!-- Tombol untuk menghapus semua riwayat aktivitas hanya jika pengguna adalah Super Admin -->
+    @if(Auth::user()->role == 'super_admin')
     <form id="delete-all-form" action="{{ route('history.destroyAll') }}" method="POST" class="mb-4">
         @csrf
         @method('DELETE')
         <button type="submit"
             class="px-6 py-3 rounded-lg text-sm transition-colors 
-                    {{ $historyActivities->isEmpty() ? 'bg-gray-400 text-gray-200 cursor-not-allowed' : 'bg-red-600 text-white hover:bg-red-500' }}"
+                        {{ $historyActivities->isEmpty() ? 'bg-gray-400 text-gray-200 cursor-not-allowed' : 'bg-red-600 text-white hover:bg-red-500' }}"
             {{ $historyActivities->isEmpty() ? 'disabled' : '' }}>
             Hapus Semua Riwayat
         </button>
     </form>
+    @endif
 
     <!-- Tabel Riwayat Aktivitas -->
     <table class="min-w-full table-auto border-collapse border border-gray-200 text-sm">
         <thead>
             <tr>
-                @foreach (['Aktifitas', 'Produk', 'Jumlah Perubahan', 'Deskripsi', 'Aktor', 'Waktu', 'Aksi'] as $header)
+                @foreach (['Aktifitas', 'Produk', 'Jumlah Perubahan', 'Deskripsi', 'Aktor', 'Waktu'] as $header)
                 <th class="px-4 py-2 border text-center">{{ $header }}</th>
                 @endforeach
+                <!-- Menampilkan kolom Aksi hanya jika user adalah Super Admin -->
+                @if(Auth::user()->role == 'super_admin')
+                <th class="px-4 py-2 border text-center">Aksi</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -40,6 +46,9 @@
                 <td class="px-4 py-2 border text-center">
                     {{ $activity->created_at->format('Y-m-d H:i') }}
                 </td>
+
+                <!-- Kolom Aksi hanya akan ditampilkan jika user adalah Super Admin -->
+                @if(Auth::user()->role == 'super_admin')
                 <td class="px-4 py-2 border text-center">
                     <!-- Tombol Hapus per Baris -->
                     <form action="{{ route('history.destroy', $activity->id) }}" method="POST" class="delete-form">
@@ -48,6 +57,7 @@
                         <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-500 transition-colors">Hapus</button>
                     </form>
                 </td>
+                @endif
             </tr>
             @empty
             <tr>

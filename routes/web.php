@@ -83,18 +83,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth')->group(function () {
-    // Menampilkan semua akun pengguna
     Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
-
-    // Menampilkan detail akun pengguna
     Route::get('/accounts/{id}', [AccountController::class, 'show'])->name('accounts.show');
-
-    // Menampilkan halaman form untuk mengedit akun pengguna
     Route::get('/accounts/{id}/edit', [AccountController::class, 'edit'])->name('accounts.edit');
-
-    // Memperbarui data akun pengguna
     Route::put('/accounts/{id}', [AccountController::class, 'update'])->name('accounts.update');
-
-    // Menghapus akun pengguna
     Route::delete('/accounts/{id}', [AccountController::class, 'destroy'])->name('accounts.destroy');
 });

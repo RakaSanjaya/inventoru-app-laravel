@@ -40,5 +40,5 @@
     <div class="w-full mt-6">
         {{ $notifications->links() }}
     </div>
-</div>
+</div>.
 @endsection

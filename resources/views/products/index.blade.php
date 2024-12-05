@@ -3,8 +3,8 @@
 @section('title', 'Products')
 
 @section('content')
-<div class="bg-white p-6 rounded-lg shadow-lg max-w-6xl mx-auto">
-    <h1 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Products</h1>
+<div class="container mx-auto my-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Products</h1>
 
     <a href="{{ route('products.create') }}" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-500 transition duration-300 ease-in-out mb-4 inline-block">
         Add New Product
@@ -18,17 +18,19 @@
 
     <table class="table-auto w-full mt-6 border-collapse shadow-md rounded-md">
         <thead>
-            <tr class="bg-gray-200 text-left">
-                <th class="px-6 py-3 text-sm font-semibold text-gray-700 text-center">Name</th>
-                <th class="px-6 py-3 text-sm font-semibold text-gray-700 text-center">Category</th>
-                <th class="px-6 py-3 text-sm font-semibold text-gray-700 text-center">Stock</th>
-                <th class="px-6 py-3 text-sm font-semibold text-gray-700 text-center">Price</th>
-                <th class="px-6 py-3 text-sm font-semibold text-gray-700 text-center">Actions</th>
+            <tr class="bg-emerald-700 text-white">
+                <th class="px-6 py-3 text-sm font-semibold text-center">No</th> <!-- Added No column -->
+                <th class="px-6 py-3 text-sm font-semibold text-center">Name</th>
+                <th class="px-6 py-3 text-sm font-semibold text-center">Category</th>
+                <th class="px-6 py-3 text-sm font-semibold text-center">Stock</th>
+                <th class="px-6 py-3 text-sm font-semibold text-center">Price</th>
+                <th class="px-6 py-3 text-sm font-semibold text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($products as $product)
-            <tr class="border-b hover:bg-gray-50 transition duration-300 ease-in-out">
+            @foreach ($products as $index => $product)
+            <tr class=" bg-white hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm text-center">{{ $index + 1 }}</td> <!-- Display product number -->
                 <td class="px-6 py-4 text-sm font-medium text-gray-900 text-center">
                     <a href="{{ route('products.show', $product->id) }}" class="text-blue-600 hover:underline">{{ $product->name }}</a>
                 </td>

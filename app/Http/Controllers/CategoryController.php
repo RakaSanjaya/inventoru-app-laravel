@@ -33,10 +33,10 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        $product = Product::findOrFail($id);
-        return view('categories.edit', compact('product', 'category'));
+        $category = Category::findOrFail($id);  // Pastikan ini Category
+        return view('categories.edit', compact('category'));
     }
+
 
     public function update(Request $request, $id)
     {

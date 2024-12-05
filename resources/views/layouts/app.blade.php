@@ -19,9 +19,9 @@
 
 <body class="bg-gray-100 font-inter leading-normal tracking-normal text-sm">
     <x-navbar.index></x-navbar.index>
-    <div class="flex h-screen">
+    <div class="flex min-h-screen">
         <x-sidebar></x-sidebar>
-        <section class="container ml-[23%] mx-auto mt-28">
+        <section class="container ml-[20%] px-4 mx-auto mt-20">
             @yield('content')
         </section>
     </div>

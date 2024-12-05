@@ -8,7 +8,6 @@
     <form action="{{ route('accounts.update', $user->id) }}" method="POST" class="bg-white p-6 rounded-lg shadow-lg">
         @csrf
         @method('PUT')
-
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
             <input

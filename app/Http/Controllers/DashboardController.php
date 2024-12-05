@@ -17,7 +17,7 @@ class DashboardController extends Controller
 
         $recentProducts = Product::all()->reverse()->take(5);
         $recentActivities = HistoryActivity::all()->reverse()->take(5);
-        $notifications = Notification::latest()->paginate(5);
+        $notifications = Notification::latest()->take(3)->get();
 
         return view('dashboard.index', compact(
             'totalProducts',

@@ -30,6 +30,8 @@ class AuthController extends Controller
                 ->withInput();
         }
 
+        $user = Auth::user();
+
         if (Auth::attempt($credentials)) {
             return redirect()->intended('dashboard');
         }

@@ -1,45 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-6">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Daftar Pengguna</h2>
+<div class="container mx-auto my-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Accounts</h1>
 
-    <!-- Pesan sukses atau error -->
     @if(session('success'))
-    <div class="bg-green-100 text-green-800 p-4 rounded-md mb-4">
+    <div class="bg-green-100 text-green-800 p-4 rounded-md mb-4 text-center">
         {{ session('success') }}
     </div>
     @elseif(session('error'))
-    <div class="bg-red-100 text-red-800 p-4 rounded-md mb-4">
+    <div class="bg-red-100 text-red-800 p-4 rounded-md mb-4 text-center">
         {{ session('error') }}
     </div>
     @endif
 
-    <div class="overflow-x-auto shadow-md rounded-lg border border-gray-200">
-        <table class="min-w-full table-auto text-sm">
+    <div class="overflow-x-auto shadow-md border border-gray-200">
+        <table class="min-w-full table-auto text-sm text-center">
             <thead>
-                <tr class="bg-gray-100 text-left">
-                    <th class="py-2 px-4 border-b font-medium text-gray-700">Nama</th>
-                    <th class="py-2 px-4 border-b font-medium text-gray-700">Email</th>
-                    <th class="py-2 px-4 border-b font-medium text-gray-700">Role</th>
-                    <th class="py-2 px-4 border-b font-medium text-gray-700 text-center">Aksi</th>
+                <tr class="bg-emerald-700 text-white">
+                    <th class="py-3 px-4 border-b font-medium">No</th> <!-- Added No column -->
+                    <th class="py-3 px-4 border-b font-medium">Name</th>
+                    <th class="py-3 px-4 border-b font-medium">Email</th>
+                    <th class="py-3 px-4 border-b font-medium">Role</th>
+                    @if(auth()->user()->role == 'super_admin')
+                    <th class="py-3 px-4 border-b font-medium">Actions</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
-                @foreach($users as $user)
-                <tr class="hover:bg-gray-50">
+                @foreach($users as $index => $user)
+                <tr class="hover:bg-gray-100">
+                    <td class="py-3 px-4 border-b">{{ $index + 1 }}</td> <!-- Display user number -->
                     <td class="py-3 px-4 border-b">{{ $user->name }}</td>
-                    <td class="py-3 px-4 border-b">{{ $user->email }}</td>
+                    <td class="py-3 px-4 border-b">
+                        @if(auth()->user()->role == 'admin' || auth()->user()->role == 'user')
+                        <!-- Masking email if the user is admin -->
+                        {{ substr($user->email, 0, 3) . '***@***' }}
+                        @else
+                        <!-- Display full email for other roles -->
+                        {{ $user->email }}
+                        @endif
+                    </td>
                     <td class="py-3 px-4 border-b capitalize">{{ $user->role }}</td>
-                    <td class="py-3 px-4 border-b text-center">
-                        <a href="{{ route('accounts.edit', $user->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-all">Edit</a>
-                        <a href="{{ route('accounts.show', $user->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all ml-2">Detail</a>
+                    @if(auth()->user()->role == 'super_admin')
+                    <td class="py-3 px-4 border-b">
+                        <a href="{{ route('accounts.edit', $user->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600 transition-all">Edit</a>
+                        <a href="{{ route('accounts.show', $user->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition-all ml-2">Details</a>
                         <form action="{{ route('accounts.destroy', $user->id) }}" method="POST" style="display:inline;" class="inline-block">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all ml-2" onclick="return confirm('Apakah Anda yakin ingin menghapus akun ini?')">Hapus</button>
+                            <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-all ml-2" onclick="return confirm('Are you sure you want to delete this account?')">Delete</button>
                         </form>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
