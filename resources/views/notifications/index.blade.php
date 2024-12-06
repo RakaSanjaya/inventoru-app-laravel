@@ -11,7 +11,7 @@
     @endif
 
     <div class="space-y-4">
-        @foreach ($notifications as $notification)
+        @forelse ($notifications as $notification)
         <div class="bg-white p-4 rounded-lg shadow-md flex justify-between items-start">
             <div class="flex-1">
                 <p class="text-gray-800 font-medium flex items-center">
@@ -35,10 +35,17 @@
                 </div>
             </div>
         </div>
-        @endforeach
+        @empty
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <p class="text-gray-800 font-medium">Tidak ada notifikasi saat ini.</p>
+        </div>
+        @endforelse
     </div>
+
+    @if ($notifications->count())
     <div class="w-full mt-6">
         {{ $notifications->links() }}
     </div>
-</div>.
+    @endif
+</div>
 @endsection

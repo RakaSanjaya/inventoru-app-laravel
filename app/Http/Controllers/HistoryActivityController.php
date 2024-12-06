@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\HistoryActivity;
-use Illuminate\Http\Request;
 
 class HistoryActivityController extends Controller
 {
@@ -13,7 +12,6 @@ class HistoryActivityController extends Controller
         return view('history.index', compact('historyActivities'));
     }
 
-    // Method to delete a specific history activity
     public function destroy($id)
     {
         $historyActivity = HistoryActivity::find($id);
@@ -26,10 +24,9 @@ class HistoryActivityController extends Controller
         return redirect()->route('history.index')->with('error', 'Riwayat aktivitas tidak ditemukan.');
     }
 
-    // Method to delete all history activities
     public function destroyAll()
     {
-        HistoryActivity::truncate(); // This will delete all records from the table
+        HistoryActivity::truncate();
 
         return redirect()->route('history.index')->with('success', 'Semua riwayat aktivitas berhasil dihapus.');
     }

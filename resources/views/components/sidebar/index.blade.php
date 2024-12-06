@@ -7,7 +7,7 @@
             </svg>
         </x-sidebar.link>
 
-        <x-sidebar.link href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
+        <x-sidebar.link href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') || request()->routeIs('products.create') || request()->routeIs('products.edit') || request()->routeIs('products.adjustStockForm') || request()->routeIs('products.show') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
             <p>Products</p>
             <!-- Ikon Products -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="{{ request()->routeIs('products.index') ? 'currentColor' : 'none' }}" stroke="{{ request()->routeIs('products.index') ? 'none' : 'currentColor' }}" stroke-width="1.5" class="size-6">
@@ -19,7 +19,7 @@
 
         @if(auth()->user()->role !== 'user')
         <x-sidebar.link href="{{ route('accounts.index') }}"
-            class="{{ request()->routeIs('accounts.index') || request()->routeIs('accounts.create') || request()->routeIs('accounts.edit') || request()->routeIs('accounts.adjustStockForm') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
+            class="{{ request()->routeIs('accounts.index') || request()->routeIs('accounts.create') || request()->routeIs('accounts.edit') || request()->routeIs('accounts.adjustStockForm') || request()->routeIs('accounts.show') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
             <p>Accounts</p>
             <!-- Ikon Accounts -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="{{ request()->routeIs('accounts.index') || request()->routeIs('accounts.create') || request()->routeIs('accounts.edit') || request()->routeIs('accounts.adjustStockForm') ? 'currentColor' : 'none' }}" stroke="{{ request()->routeIs('accounts.index') || request()->routeIs('accounts.create') || request()->routeIs('accounts.edit') || request()->routeIs('accounts.adjustStockForm') ? 'none' : 'currentColor' }}" stroke-width="1.7" class="size-6">
@@ -30,7 +30,7 @@
 
         @endif
         <x-sidebar.link href="{{ route('history.index') }}"
-            class="{{ request()->routeIs('history.index') || request()->routeIs('history.edit') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
+            class="{{ request()->routeIs('history.index') || request()->routeIs('history.edit') || request()->routeIs('history.create') || request()->routeIs('history.show') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
             <p>History Activity</p>
             <!-- Ikon saat link aktif -->
             @if(request()->routeIs('history.index') || request()->routeIs('history.edit'))
@@ -47,9 +47,8 @@
             @endif
         </x-sidebar.link>
 
-
         <x-sidebar.link href="{{ route('categories.index') }}"
-            class="{{ request()->routeIs('categories.index') || request()->routeIs('categories.create') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
+            class="{{ request()->routeIs('categories.index') || request()->routeIs('categories.create') || request()->routeIs('categories.edit') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
             <p>Manage Categories</p>
             <!-- Tampilkan ikon aktif jika route cocok -->
             @if (request()->routeIs('categories.index') || request()->routeIs('categories.create'))
@@ -65,9 +64,8 @@
             @endif
         </x-sidebar.link>
 
-
         <x-sidebar.link href="{{ route('locations.index') }}"
-            class="{{ request()->routeIs('locations.index') || request()->routeIs('locations.create') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
+            class="{{ request()->routeIs('locations.index') || request()->routeIs('locations.create') || request()->routeIs('locations.edit') ? 'text-white bg-emerald-700' : 'text-neutral-400' }} border-b border-neutral-200 w-full h-full block px-4 py-5 duration-200 ease-in text-sm hover:text-white hover:bg-neutral-400">
             <p>Storage Locations</p>
             <!-- Change icon based on route status -->
             @if (request()->routeIs('locations.index') || request()->routeIs('locations.create'))

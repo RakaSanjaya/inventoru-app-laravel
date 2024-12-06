@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -36,7 +35,6 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);  // Pastikan ini Category
         return view('categories.edit', compact('category'));
     }
-
 
     public function update(Request $request, $id)
     {

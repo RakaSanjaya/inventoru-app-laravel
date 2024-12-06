@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,20 +34,32 @@ class ProfileController extends Controller
         ]);
 
         $data = $request->only('name', 'email', 'phone');
+        $requiresReauth = false;
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
+            $requiresReauth = true;
+        }
+
+        if ($request->email !== $user->email) {
+            $data['email'] = $request->email;
+            $requiresReauth = true;
         }
 
         if ($request->hasFile('avatar')) {
-            if ($user->avatar && Storage::exists($user->avatar)) {
-                Storage::delete($user->avatar);
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
             }
 
             $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
         $user->update($data);
+
+        if ($requiresReauth) {
+            Auth::logout();
+            return redirect()->route('login')->with('success', 'Profile updated successfully. Please log in again.');
+        }
 
         return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
     }

@@ -3,10 +3,9 @@
 @section('title', 'Categories')
 
 @section('content')
-<div class="bg-white p-6 rounded-lg shadow-lg max-w-6xl mx-auto">
+<div class="container mx-auto my-8">
     <h1 class="text-3xl font-semibold mb-6 text-gray-800">Categories</h1>
 
-    <!-- Menampilkan tombol 'Add New Category' hanya jika pengguna memiliki role super_admin atau admin -->
     @if(in_array(Auth::user()->role, ['super_admin', 'admin']))
     <a href="{{ route('categories.create') }}" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-500 transition duration-300 ease-in-out mb-6 inline-block">
         Add New Category
@@ -28,7 +27,7 @@
     <table class="table-auto w-full mt-6 border-separate border-spacing-0.5">
         <thead class="bg-emerald-700 text-white">
             <tr>
-                <th class="px-6 py-3 text-sm font-medium">No</th> <!-- Column for numbers -->
+                <th class="px-6 py-3 text-sm font-medium">No</th>
                 <th class="px-6 py-3 text-sm font-medium">Name</th>
                 <th class="px-6 py-3 text-sm font-medium">Description</th>
                 @if(in_array(Auth::user()->role, ['super_admin', 'admin']))
@@ -37,9 +36,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($categories as $index => $category) <!-- Adding index to generate the number -->
-            <tr class="border-b hover:bg-gray-50 transition text-center duration-300 ease-in-out">
-                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $index + 1 }}</td> <!-- Displaying the number -->
+            @forelse ($categories as $index => $category)
+            <tr class="border-b bg-white hover:bg-gray-50 transition text-center duration-300 ease-in-out">
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $index + 1 }}</td>
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $category->name }}</td>
                 <td class="px-6 py-4 text-sm text-gray-800">{{ $category->description }}</td>
 
@@ -56,7 +55,13 @@
                 </td>
                 @endif
             </tr>
-            @endforeach
+            @empty
+            <tr class="bg-white">
+                <td colspan="{{ in_array(Auth::user()->role, ['super_admin', 'admin']) ? '4' : '3' }}" class="px-6 py-4 text-center text-gray-500">
+                    No categories available.
+                </td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
 </div>

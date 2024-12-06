@@ -12,6 +12,9 @@ export default {
             fontFamily: {
                 sans: ["Inter", ...defaultTheme.fontFamily.sans],
             },
+              boxShadow: {
+                "shadow-card": "10px 10px 0px 0px rgb(21 128 61)",
+            },
         },
     },
     plugins: [],

@@ -3,19 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
-use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
     public function index()
     {
-        // Fetch notifications ordered by creation date
         $notifications = Notification::orderBy('created_at', 'desc')->paginate(10);
-
-        // Fetch the count of unread notifications
         $unreadCount = Notification::where('is_read', false)->count();
-
-        // Pass the data to the view
         return view('notifications.index', compact('notifications', 'unreadCount'));
     }
 

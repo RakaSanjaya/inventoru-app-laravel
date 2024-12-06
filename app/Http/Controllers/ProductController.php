@@ -170,6 +170,13 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
 
+        if ($request->type === 'stock_out' && $product->stock < $request->quantity) {
+            return redirect()->back()->withErrors([
+                'quantity' => 'Stok produk tidak mencukupi untuk dikurangi.'
+            ]);
+        }
+
+        // Menambah atau mengurangi stok sesuai dengan tipe
         $product->stock += $request->type === 'stock_in' ? $request->quantity : -$request->quantity;
         $product->save();
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Notification;
 use App\Models\HistoryActivity;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {

@@ -34,10 +34,8 @@
                     <td class="py-3 px-4">{{ $user->name }}</td>
                     <td class="py-3 px-4">
                         @if(auth()->user()->role == 'admin' || auth()->user()->role == 'user')
-                        <!-- Masking email if the user is admin -->
                         {{ substr($user->email, 0, 3) . '***@***' }}
                         @else
-                        <!-- Display full email for other roles -->
                         {{ $user->email }}
                         @endif
                     </td>

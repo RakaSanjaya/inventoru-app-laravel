@@ -50,7 +50,7 @@
             Back to Products
         </a>
 
-        <!-- Optional: Add action buttons (like edit or delete) -->
+        @if(in_array(Auth::user()->role, ['super_admin', 'admin']))
         <div class="space-x-4">
             <a href="{{ route('products.edit', $product->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-400 transition duration-300 ease-in-out">
                 Edit
@@ -64,5 +64,6 @@
             </form>
         </div>
     </div>
+    @endif
 </div>
 @endsection
